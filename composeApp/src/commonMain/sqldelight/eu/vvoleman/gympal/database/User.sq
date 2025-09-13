@@ -1,0 +1,17 @@
+CREATE TABLE User (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    email TEXT NOT NULL UNIQUE
+);
+
+insert:
+INSERT INTO User(id, name, email) VALUES (:id, :name, :email);
+
+getAll:
+SELECT * FROM User;
+
+getById:
+SELECT * FROM User WHERE id = :id;
+
+deleteById:
+DELETE FROM User WHERE id = :id;

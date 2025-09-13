@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlin.serialization)
     alias(libs.plugins.buildkonfig)
+    alias(libs.plugins.sqlDelight)
 }
 
 
@@ -82,6 +83,8 @@ kotlin {
 
             implementation(libs.koin.android)
             implementation(libs.koin.androidx.compose)
+
+            implementation(libs.sqldelight.android)
         }
         commonMain.dependencies {
             implementation(compose.runtime)
@@ -114,6 +117,8 @@ kotlin {
             implementation(libs.supabase.postgrest)
             implementation(libs.supabase.storage)
             implementation(libs.supabase.realtime)
+
+            implementation(libs.sqldelight.coroutines)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -121,6 +126,18 @@ kotlin {
         jvmMain.dependencies {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
+            implementation(libs.sqldelight.jvm)
+        }
+        nativeMain.dependencies {
+            implementation(libs.sqldelight.native)
+        }
+    }
+
+    sqldelight {
+        databases {
+            create("GymPalDatabase") {
+                packageName.set("eu.vvoleman.gympal.database")
+            }
         }
     }
 }
