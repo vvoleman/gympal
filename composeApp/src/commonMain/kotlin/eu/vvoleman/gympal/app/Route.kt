@@ -1,13 +1,7 @@
 package eu.vvoleman.gympal.app
 
-import kotlinx.serialization.Serializable
-
+// Type-safe Route DTOs decoupled from UI implementation
 sealed interface Route {
-
-    @Serializable
     data object Home : Route
-
-    @Serializable
     data object Workouts : Route
-
 }

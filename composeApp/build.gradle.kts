@@ -50,7 +50,9 @@ kotlin {
             implementation(libs.androidx.lifecycle.runtimeCompose)
 
             implementation(libs.kotlinx.serialization.json)
-            implementation("org.jetbrains.androidx.navigation:navigation-compose:2.9.0-beta05")
+            // Voyager navigation for KMP
+            implementation(libs.voyager.navigator)
+            implementation(libs.voyager.transitions)
             implementation(libs.touchlab.kermit)
 
 //            implementation(libs.material.icons.core)
