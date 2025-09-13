@@ -1,5 +1,6 @@
 package eu.vvoleman.gympal.di
 
+import eu.vvoleman.gympal.app.AppDestinationMapper
 import eu.vvoleman.gympal.common.di.commonModule
 import org.koin.core.module.Module
 import org.koin.dsl.module
@@ -7,5 +8,6 @@ import org.koin.dsl.module
 expect val platformModule: Module
 
 val sharedModule = module {
+    single<AppDestinationMapper> { AppDestinationMapper() }
     includes(commonModule)
 }

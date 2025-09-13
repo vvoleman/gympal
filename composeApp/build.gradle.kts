@@ -1,5 +1,6 @@
 import org.jetbrains.compose.desktop.application.dsl.TargetFormat
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     alias(libs.plugins.kotlinMultiplatform)
@@ -8,6 +9,49 @@ plugins {
     alias(libs.plugins.composeCompiler)
     alias(libs.plugins.composeHotReload)
     alias(libs.plugins.kotlin.serialization)
+    alias(libs.plugins.buildkonfig)
+}
+
+
+// Systematic .env loading for BuildKonfig (single source of truth for all targets)
+// Layers (earlier can be overridden by later): .env -> .env.<env> -> .env.local
+// Select environment via -Penv=<name> (default: development). Optional -PstrictEnv=true to fail on missing required keys.
+val envName: String = (project.findProperty("env") as? String)?.lowercase() ?: "development"
+
+fun loadProps(fileName: String): Properties = Properties().apply {
+    val f = rootProject.file(fileName)
+    if (f.exists()) f.inputStream().use { load(it) }
+}
+
+fun loadLayeredEnv(): Properties {
+    val base = loadProps(".env")
+    val env = loadProps(".env.$envName")
+    val local = loadProps(".env.local")
+    // Merge in order: base <- env <- local
+    base.putAll(env)
+    base.putAll(local)
+    // Allow OS environment variables to fill in missing keys (do not override explicitly set ones)
+    System.getenv().forEach { (k, v) ->
+        if (!base.containsKey(k) && !v.isNullOrEmpty()) base[k] = v
+    }
+    return base
+}
+
+val envProps: Properties = loadLayeredEnv()
+
+buildkonfig {
+    packageName = "eu.vvoleman.gympal"
+    objectName = "BuildKonfig"
+    defaultConfigs {
+        // Dynamically expose any env keys starting with GP_ as STRING constants
+        envProps.stringPropertyNames()
+            .filter { it.startsWith("GP_") }
+            .sorted()
+            .forEach { key ->
+                val value = envProps.getProperty(key) ?: ""
+                buildConfigField(com.codingfeline.buildkonfig.compiler.FieldSpec.Type.STRING, key, value)
+            }
+    }
 }
 
 kotlin {
@@ -64,6 +108,12 @@ kotlin {
             api(libs.koin.core)
             api(libs.androidx.datastore)
             api(libs.androidx.datastore.preferences)
+
+            // Supabase (modules)
+            implementation(libs.supabase.gotrue)
+            implementation(libs.supabase.postgrest)
+            implementation(libs.supabase.storage)
+            implementation(libs.supabase.realtime)
         }
         commonTest.dependencies {
             implementation(libs.kotlin.test)
@@ -85,6 +135,7 @@ android {
         targetSdk = libs.versions.android.targetSdk.get().toInt()
         versionCode = 1
         versionName = "1.0"
+
     }
     packaging {
         resources {

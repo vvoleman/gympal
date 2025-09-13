@@ -1,4 +1,4 @@
-package eu.vvoleman.gympal.features.workouts.presentation
+package eu.vvoleman.gympal.feature.home.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.core.screen.Screen
+import eu.vvoleman.gympal.BuildKonfig
 import eu.vvoleman.gympal.app.AppDestinationMapper
 import eu.vvoleman.gympal.app.Route
 import eu.vvoleman.gympal.common.domain.service.LoggerInterface
 import org.koin.compose.koinInject
 
-object WorkoutsScreen : Screen {
+object HomeScreen : Screen {
     @Composable
     override fun Content() {
         val logger = koinInject<LoggerInterface>()
@@ -34,10 +35,10 @@ object WorkoutsScreen : Screen {
                 .fillMaxSize()
                 .safeDrawingPadding(),
             bottomBar = {
-                WorkoutsBottomBar(
-                    onHome = { destinationMapper.replaceAll(Route.Home) },
-                    onWorkouts = { /* already here */ },
-                    selected = Route.Workouts
+                HomeBottomBar(
+                    onHome = { /* already here */ },
+                    onWorkouts = { destinationMapper.replaceAll(Route.Workouts) },
+                    selected = Route.Home
                 )
             }
         ) { padding ->
@@ -49,22 +50,22 @@ object WorkoutsScreen : Screen {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Your Workouts",
+                    text = "Welcome to GymPal!!!",
                     style = MaterialTheme.typography.headlineMedium
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "No workouts yet. Create your first routine!",
+                    text = "Track your workouts and see your progress.",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        logger.info("Navigating to Home")
-                        destinationMapper.replaceAll(Route.Home)
+                        logger.info("Navigating to Workouts")
+                        destinationMapper.navigate(Route.Workouts)
                     }
                 ) {
-                    Text("Back to Home")
+                    Text("Start a workout, ${BuildKonfig.GP_API_BASE_URL}")
                 }
             }
         }
@@ -72,7 +73,7 @@ object WorkoutsScreen : Screen {
 }
 
 @Composable
-private fun WorkoutsBottomBar(
+private fun HomeBottomBar(
     selected: Route,
     onHome: () -> Unit,
     onWorkouts: () -> Unit

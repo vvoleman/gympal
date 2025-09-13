@@ -2,8 +2,8 @@ package eu.vvoleman.gympal.app
 
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
-import eu.vvoleman.gympal.features.home.presentation.HomeScreen
-import eu.vvoleman.gympal.features.workouts.presentation.WorkoutsScreen
+import eu.vvoleman.gympal.feature.home.presentation.HomeScreen
+import eu.vvoleman.gympal.feature.workouts.presentation.WorkoutsScreen
 
 class AppDestinationMapper {
 

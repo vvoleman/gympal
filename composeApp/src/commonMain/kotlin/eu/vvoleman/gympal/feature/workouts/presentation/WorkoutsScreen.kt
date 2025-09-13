@@ -1,4 +1,4 @@
-package eu.vvoleman.gympal.features.home.presentation
+package eu.vvoleman.gympal.feature.workouts.presentation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +23,7 @@ import eu.vvoleman.gympal.app.Route
 import eu.vvoleman.gympal.common.domain.service.LoggerInterface
 import org.koin.compose.koinInject
 
-object HomeScreen : Screen {
+object WorkoutsScreen : Screen {
     @Composable
     override fun Content() {
         val logger = koinInject<LoggerInterface>()
@@ -34,10 +34,10 @@ object HomeScreen : Screen {
                 .fillMaxSize()
                 .safeDrawingPadding(),
             bottomBar = {
-                HomeBottomBar(
-                    onHome = { /* already here */ },
-                    onWorkouts = { destinationMapper.replaceAll(Route.Workouts) },
-                    selected = Route.Home
+                WorkoutsBottomBar(
+                    onHome = { destinationMapper.replaceAll(Route.Home) },
+                    onWorkouts = { /* already here */ },
+                    selected = Route.Workouts
                 )
             }
         ) { padding ->
@@ -49,22 +49,22 @@ object HomeScreen : Screen {
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
-                    text = "Welcome to GymPal",
+                    text = "Your Workouts",
                     style = MaterialTheme.typography.headlineMedium
                 )
                 Spacer(Modifier.height(8.dp))
                 Text(
-                    text = "Track your workouts and see your progress.",
+                    text = "No workouts yet. Create your first routine!",
                     style = MaterialTheme.typography.bodyMedium
                 )
                 Spacer(Modifier.height(16.dp))
                 Button(
                     onClick = {
-                        logger.info("Navigating to Workouts")
-                        destinationMapper.navigate(Route.Workouts)
+                        logger.info("Navigating to Home")
+                        destinationMapper.replaceAll(Route.Home)
                     }
                 ) {
-                    Text("Start a workout")
+                    Text("Back to Home")
                 }
             }
         }
@@ -72,7 +72,7 @@ object HomeScreen : Screen {
 }
 
 @Composable
-private fun HomeBottomBar(
+private fun WorkoutsBottomBar(
     selected: Route,
     onHome: () -> Unit,
     onWorkouts: () -> Unit
