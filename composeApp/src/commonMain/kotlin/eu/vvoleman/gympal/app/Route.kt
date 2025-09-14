@@ -4,4 +4,5 @@ package eu.vvoleman.gympal.app
 sealed interface Route {
     data object Home : Route
     data object Workouts : Route
+    data object Camera : Route
 }

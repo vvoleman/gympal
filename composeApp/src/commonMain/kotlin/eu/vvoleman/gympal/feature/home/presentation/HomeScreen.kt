@@ -122,6 +122,10 @@ fun HomeView(
                     onLog("Navigating to Workouts", LogLevel.INFO)
                     onNavigate(Route.Workouts)
                 },
+                onCamera = {
+                    onLog("Navigating to Camera", LogLevel.INFO)
+                    onNavigate(Route.Camera)
+                },
                 selected = Route.Home
             )
         }
@@ -195,7 +199,8 @@ fun HomeView(
 private fun HomeBottomBar(
     selected: Route,
     onHome: () -> Unit,
-    onWorkouts: () -> Unit
+    onWorkouts: () -> Unit,
+    onCamera: () -> Unit
 ) {
     NavigationBar {
         NavigationBarItem(
@@ -208,6 +213,12 @@ private fun HomeBottomBar(
             selected = selected == Route.Workouts,
             onClick = onWorkouts,
             label = { Text("Workouts") },
+            icon = { }
+        )
+        NavigationBarItem(
+            selected = selected == Route.Camera,
+            onClick = onCamera,
+            label = { Text("Kamera") },
             icon = { }
         )
     }

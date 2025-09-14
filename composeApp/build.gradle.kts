@@ -127,6 +127,10 @@ kotlin {
             implementation(compose.desktop.currentOs)
             implementation(libs.kotlinx.coroutinesSwing)
             implementation(libs.sqldelight.jvm)
+
+            // JavaCV pro implementaci kamery na JVM platformě
+            implementation("org.bytedeco:javacv-platform:1.5.9")
+            implementation("org.bytedeco:opencv:4.7.0-1.5.9")
         }
         nativeMain.dependencies {
             implementation(libs.sqldelight.native)

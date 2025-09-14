@@ -2,6 +2,7 @@ package eu.vvoleman.gympal.app
 
 import cafe.adriel.voyager.core.screen.Screen
 import cafe.adriel.voyager.navigator.Navigator
+import eu.vvoleman.gympal.feature.camera.presentation.CameraScreen
 import eu.vvoleman.gympal.feature.home.presentation.HomeScreen
 import eu.vvoleman.gympal.feature.workouts.presentation.WorkoutsScreen
 
@@ -34,5 +35,6 @@ class AppDestinationMapper {
     private fun map(route: Route): Screen = when (route) {
         Route.Home -> HomeScreen
         Route.Workouts -> WorkoutsScreen
+        Route.Camera -> CameraScreen
     }
 }
